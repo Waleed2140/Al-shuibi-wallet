@@ -3,63 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محفظة الشعيبي - تسجيل الدخول والتحويل</title>
+    <title>لوحة إدارة نظام محفظة الشعيبي</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; text-align: center; }
-        .card { max-width: 400px; margin: 30px auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0px 4px 15px rgba(0,0,0,0.1); }
-        h2 { color: #007bff; margin-bottom: 20px; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; text-align: center; font-size: 14px; }
-        button { width: 95%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 10px; }
-        button:hover { background-color: #218838; }
-        .result { margin-top: 15px; font-weight: bold; color: #333; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { margin: 0; padding: 0; background-color: #f4f6f9; direction: rtl; }
+        
+        /* الهيدر العلوي */
+        .header { background-color: #1e293b; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h2 { margin: 0; font-size: 20px; }
+
+        /* شريط التبويبات العلوي */
+        .navbar { background-color: #334155; display: flex; overflow-x: auto; border-bottom: 2px solid #0284c7; }
+        .nav-tab { padding: 12px 20px; color: #cbd5e1; background: none; border: none; cursor: pointer; font-size: 14px; font-weight: bold; white-space: nowrap; transition: 0.3s; }
+        .nav-tab:hover, .nav-tab.active { background-color: #0284c7; color: white; }
+
+        /* محتوى التبويبات */
+        .container { padding: 20px; }
+        .tab-content { display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .tab-content.active { display: block; }
+
+        /* الجداول وشريط البحث */
+        .search-bar { display: flex; gap: 10px; margin-bottom: 15px; }
+        .search-bar input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; flex: 1; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; font-size: 14px; }
+        th { background-color: #f1f5f9; color: #334155; }
+        tr:nth-child(even) { background-color: #f8fafc; }
+        tr:hover { background-color: #f1f5f9; }
+
+        .btn-action { padding: 6px 12px; background-color: #0284c7; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-action:hover { background-color: #0369a1; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h2>تسجيل الدخول للمحفظة 💳</h2>
-        <input type="email" id="loginEmail" placeholder="أدخل البريد الإلكتروني">
-        <button onclick="login()">دخول</button>
-        <div id="loginMsg" class="result"></div>
+    <!-- الهيدر -->
+    <div class="header">
+        <h2>نظام إدارة محفظة الشعيبي (WAL-ADMIN)</h2>
+        <span>المستخدم: مسؤول النظام</span>
     </div>
 
-    <div class="card" id="transferSection" style="display:none;">
-        <h2>تحويل أموال 💸</h2>
-        <input type="email" id="receiverEmail" placeholder="البريد الإلكتروني للمستلم">
-        <input type="number" id="amount" placeholder="المبلغ المراد تحويله">
-        <button onclick="transfer()">إرسال الأموال</button>
-        <div id="transferMsg" class="result"></div>
+    <!-- شريط التبويبات الشبيه بالصورة -->
+    <div class="navbar">
+        <button class="nav-tab active" onclick="openTab('customers')">ادارة محافظ العملاء</button>
+        <button class="nav-tab" onclick="openTab('transactions')">حركات المحفظة</button>
+        <button class="nav-tab" onclick="openTab('settlements')">تسوية الحسابات</button>
+        <button class="nav-tab" onclick="openTab('agents')">إشعارات الوكلاء</button>
+        <button class="nav-tab" onclick="openTab('mobile')">طلبات الموبايل</button>
+        <button class="nav-tab" onclick="openTab('reports')">التقارير</button>
+    </div>
+
+    <div class="container">
+        <!-- تبويب إدارة العملاء -->
+        <div id="customers" class="tab-content active">
+            <h3>إدارة حسابات ومحافظ العملاء</h3>
+            <div class="search-bar">
+                <input type="text" placeholder="بحث باسم العميل...">
+                <input type="text" placeholder="رقم الحوالة / المرجع...">
+                <button class="btn-action">بحث</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم العميل</th>
+                        <th>رقم الحوالة</th>
+                        <th>رقم المرجع</th>
+                        <th>اسم الخدمة</th>
+                        <th>الإجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>إيمان محمد محرز عبدالله حسين ناجي</td>
+                        <td>668378608</td>
+                        <td>-</td>
+                        <td>استعلام رصيد</td>
+                        <td><button class="btn-action">استعلام</button></td>
+                    </tr>
+                    <tr>
+                        <td>نرمين فيصل هزاع قاسم</td>
+                        <td>669844276</td>
+                        <td>669844276</td>
+                        <td>تحويل مالي</td>
+                        <td><button class="btn-action">استعلام</button></td>
+                    </tr>
+                    <tr>
+                        <td>عبدالله فيصل کرامه العامري</td>
+                        <td>333581629670</td>
+                        <td>-</td>
+                        <td>إيداع نقد</td>
+                        <td><button class="btn-action">استعلام</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- تبويب حركات المحفظة -->
+        <div id="transactions" class="tab-content">
+            <h3>سجل حركات المحفظة المالية</h3>
+            <p>يتم عرض كافة العمليات المالية الصادرة والواردة هنا.</p>
+        </div>
+
+        <!-- تبويب تسوية الحسابات -->
+        <div id="settlements" class="tab-content">
+            <h3>تسوية الحسابات والمطابقات</h3>
+            <p>قسم المطابقة المالية اليومية مع البنوك والوكلاء.</p>
+        </div>
+
+        <!-- تبويب إشعارات الوكلاء -->
+        <div id="agents" class="tab-content">
+            <h3>إدارة وإشعارات الوكلاء</h3>
+            <p>متابعة عمليات وتنبيهات الوكلاء المعتمدين.</p>
+        </div>
+
+        <!-- تبويب طلبات الموبايل -->
+        <div id="mobile" class="tab-content">
+            <h3>طلبات تطبيق الموبايل</h3>
+            <p>متابعة الطلبات المعلقة القادمة من تطبيق الهاتف.</p>
+        </div>
+
+        <!-- تبويب التقارير -->
+        <div id="reports" class="tab-content">
+            <h3>التقارير المالية والدورية</h3>
+            <p>تصدير تقارير الحركة اليومية والشهرية.</p>
+        </div>
     </div>
 
     <script>
-        let currentSender = '';
+        function openTab(tabId) {
+            // إخفاء كل المحتويات
+            let contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
 
-        function login() {
-            const email = document.getElementById('loginEmail').value;
-            if(!email) {
-                document.getElementById('loginMsg').innerText = "الرجاء إدخال البريد الإلكتروني";
-                return;
-            }
-            currentSender = email;
-            document.getElementById('loginMsg').innerText = "تم تسجيل الدخول بنجاح كـ: " + email;
-            document.getElementById('loginMsg').style.color = "green";
-            document.getElementById('transferSection').style.display = "block";
-        }
+            // إلغاء تفعيل كل الأزرار
+            let tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
 
-        function transfer() {
-            const receiver = document.getElementById('receiverEmail').value;
-            const amount = document.getElementById('amount').value;
-
-            if(!receiver || !amount) {
-                document.getElementById('transferMsg').innerText = "يرجى ملء جميع البيانات";
-                document.getElementById('transferMsg').style.color = "red";
-                return;
-            }
-
-            document.getElementById('transferMsg').innerText = `تم طلب تحويل ${amount} ريال إلى ${receiver}`;
-            document.getElementById('transferMsg').style.color = "blue";
+            // تفعيل التبويب المختار
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
     </script>
-
 </body>
 </html>
