@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - نظام إدارة المحفظة (WALLET MANAGEMENT SYS.)</title>
+    <style>
+        * { box-sizing: border-box; font-family: Tahoma, Arial, sans-serif; }
+        body { margin: 0; padding: 0; background-color: #38bdf8; display: flex; justify-content: center; align-items: center; height: 100vh; direction: rtl; }
+        
+        .login-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 400px; text-align: center; border: 1px solid #cbd5e1; }
+        
+        .logo-area { margin-bottom: 20px; }
+        .logo-area h2 { color: #0f172a; font-size: 18px; margin: 10px 0 0 0; }
+        
+        .form-group { margin-bottom: 15px; text-align: right; }
+        .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #334155; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; }
+        
+        .btn-login { width: 100%; padding: 10px; background-color: #0284c7; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; margin-top: 10px; }
+        .btn-login:hover { background-color: #0369a1; }
+        
+        .alert { color: #dc2626; font-size: 12px; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="logo-area">
+            <!-- شعار المحفظة -->
+            <div style="font-size: 36px; font-weight: bold; color: #0284c7; letter-spacing: 2px;">T</div>
+            <h2>WALLET MANAGEMENT SYS.</h2>
+        </div>
+
+        <div class="form-group">
+            <label>* إسم المستخدم</label>
+            <input type="text" id="loginUser" placeholder="أدخل اسم المستخدم">
+        </div>
+
+        <div class="form-group">
+            <label>* كلمة المرور</label>
+            <input type="password" id="loginPass" placeholder="أدخل كلمة المرور">
+        </div>
+
+        <button class="btn-login" onclick="handleLogin()">دخول</button>
+        <div id="loginAlert" class="alert">اسم المستخدم أو كلمة المرور غير صحيحة!</div>
+    </div>
+
+    <script>
+        function handleLogin() {
+            const user = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
+
+            // بيانات افتراضية للمسؤول (يمكن ربطها بقاعدة البيانات لاحقاً)
+            if (user === "admin" && pass === "admin123") {
+                alert("تم تسجيل الدخول بنجاح! جاري تحويلك للوحة التحكم...");
+                // تحويل لصفحة لوحة التحكم الرئيسية
+                window.location.href = "index.html";
+            } else {
+                document.getElementById('loginAlert').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
