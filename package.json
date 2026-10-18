@@ -1,1 +1,12 @@
-
+{
+  "name": "al-shuibi-wallet",
+  "version": "1.0.0",
+  "description": "نظام محفظة إلكترونية لإدارة الأرصدة والتحويلات",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
