@@ -3,155 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة الإدارة الشاملة - محفظة الشعيبي (WAL-ADMIN)</title>
+    <title>WALLET MANAGEMENT SYS. - نظام إدارة المحفظة</title>
     <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { margin: 0; padding: 0; background-color: #f4f6f9; direction: rtl; }
+        * { box-sizing: border-box; font-family: Tahoma, Arial, sans-serif; }
+        body { margin: 0; padding: 0; background-color: #f1f5f9; direction: rtl; text-align: right; }
         
-        .header { background-color: #0f172a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .header h2 { margin: 0; font-size: 18px; }
+        .navbar { background-color: #e2e8f0; display: flex; overflow-x: auto; border-bottom: 2px solid #cbd5e1; padding: 5px; }
+        .nav-tab { padding: 8px 12px; color: #1e293b; background: #fff; border: 1px solid #cbd5e1; cursor: pointer; font-size: 12px; font-weight: bold; white-space: nowrap; margin-left: 3px; border-radius: 3px; }
+        .nav-tab:hover, .nav-tab.active { background-color: #2563eb; color: white; border-color: #1d4ed8; }
 
-        .navbar { background-color: #1e293b; display: flex; overflow-x: auto; border-bottom: 2px solid #0284c7; }
-        .nav-tab { padding: 12px 18px; color: #cbd5e1; background: none; border: none; cursor: pointer; font-size: 13px; font-weight: bold; white-space: nowrap; transition: 0.3s; }
-        .nav-tab:hover, .nav-tab.active { background-color: #0284c7; color: white; }
-
-        .container { padding: 20px; max-width: 1200px; margin: auto; }
-        .tab-content { display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .container { padding: 15px; max-width: 1400px; margin: auto; }
+        .tab-content { display: none; background: white; padding: 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .tab-content.active { display: block; }
 
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; }
-        .form-group input, .form-group select { width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: center; font-size: 13px; }
-        th { background-color: #f1f5f9; color: #334155; }
-        tr:nth-child(even) { background-color: #f8fafc; }
+        h3 { color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-top: 0; font-size: 16px; }
 
-        .btn { padding: 8px 15px; background-color: #0284c7; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; }
-        .btn:hover { background-color: #0369a1; }
-        .btn-success { background-color: #16a34a; }
-        .btn-success:hover { background-color: #15803d; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: center; font-size: 12px; }
+        th { background-color: #f8fafc; color: #334155; }
+        tr:nth-child(even) { background-color: #fcfcfc; }
         
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
-        .badge-pending { background-color: #fef08a; color: #854d0e; }
-        .badge-verified { background-color: #dcfce7; color: #166534; }
+        .btn { padding: 6px 12px; background-color: #2563eb; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px; }
+        .btn:hover { background-color: #1d4ed8; }
+        .btn-green { background-color: #16a34a; }
+        .btn-orange { background-color: #d97706; color: white; }
+
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 11px; font-weight: bold; margin-bottom: 3px; color: #475569; }
+        .form-group input, .form-group select { padding: 6px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 12px; }
         
-        .alert { padding: 10px; margin-top: 15px; border-radius: 4px; background-color: #e0f2fe; color: #0369a1; font-size: 13px; display: none; }
+        .alert-box { padding: 10px; background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; border-radius: 4px; margin-bottom: 10px; font-size: 12px; display: none; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h2>نظام إدارة محفظة الشعيبي المصرفية (WAL-ADMIN)</h2>
-        <span>المسؤول: مدير النظام العام</span>
-    </div>
-
-    <!-- شريط التنقل بين الأقسام -->
     <div class="navbar">
-        <button class="nav-tab active" onclick="openTab('kyc')">توثيق وتسجيل العملاء (KYC)</button>
-        <button class="nav-tab" onclick="openTab('trans')">الحوالات ومؤيدات الصرف</button>
-        <button class="nav-tab" onclick="openTab('agents')">إدارة الوكلاء</button>
-        <button class="nav-tab" onclick="openTab('settings')">إعدادات وصلاحيات النظام</button>
+        <button class="nav-tab active" onclick="openTab('home')">الرئيسية</button>
+        <button class="nav-tab" onclick="openTab('users')">إدارة المستخدمين</button>
+        <button class="nav-tab" onclick="openTab('master')">وكيل Master</button>
+        <button class="nav-tab" onclick="openTab('pos')">نقاط البيع</button>
+        <button class="nav-tab" onclick="openTab('settlement')">تسوية الحسابات</button>
+        <button class="nav-tab" onclick="openTab('customers')">إدارة محافظ العملاء</button>
+        <button class="nav-tab" onclick="openTab('agents')">إشعارات الوكلاء</button>
+        <button class="nav-tab" onclick="openTab('transactions')">حركات المحفظة</button>
+        <button class="nav-tab" onclick="openTab('reports')">التقارير</button>
+        <button class="nav-tab" onclick="openTab('mobile')">طلبات الموبايل</button>
     </div>
 
     <div class="container">
+        <div id="statusAlert" class="alert-box"></div>
 
-        <!-- 1. تبويب تسجيل وتوثيق العملاء -->
-        <div id="kyc" class="tab-content active">
-            <h3>تسجيل عميل جديد وطلب الوثائق</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div>
-                    <div class="form-group">
-                        <label>اسم العميل الرباعي</label>
-                        <input type="text" id="clientName" placeholder="مثال: خالد عبدالله الشعيبي">
-                    </div>
-                    <div class="form-group">
-                        <label>البريد الإلكتروني</label>
-                        <input type="email" id="clientEmail" placeholder="client@wallet.com">
-                    </div>
-                    <div class="form-group">
-                        <label>رقم الجوال</label>
-                        <input type="text" id="clientPhone" placeholder="77xxxxxxxx">
-                    </div>
-                    <button class="btn btn-success" onclick="registerClient()">تسجيل العميل وتوليد بيانات الاعتماد</button>
-                    <div id="regAlert" class="alert"></div>
-                </div>
-                <div>
-                    <h4>قائمة الحسابات والعملاء</h4>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>الاسم</th>
-                                <th>الحالة</th>
-                                <th>الرصيد</th>
-                                <th>الإجراء</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTableBody">
-                            <!-- سيتم تعبئتها ديناميكياً -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <!-- 1. الرئيسية -->
+        <div id="home" class="tab-content active">
+            <h3>نظام إدارة المحفظة الإلكترونية (WAL-ADMIN)</h3>
+            <p>اختر من الشريط العلوي للتحكم بالعمليات والعملاء والحسابات.</p>
         </div>
 
-        <!-- 2. تبويب الحوالات ومؤيدات الصرف -->
-        <div id="trans" class="tab-content">
-            <h3>إدارة الحوالات المالية ومؤيدات الصرف</h3>
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <input type="text" id="senderIn" placeholder="بريد المرسل" style="padding:8px; border:1px solid #ccc; border-radius:4px; flex:1;">
-                <input type="text" id="receiverIn" placeholder="بريد المستلم" style="padding:8px; border:1px solid #ccc; border-radius:4px; flex:1;">
-                <input type="number" id="amountIn" placeholder="المبلغ" style="padding:8px; border:1px solid #ccc; border-radius:4px; width:120px;">
-                <button class="btn" onclick="makeTransfer()">تنفيذ وإصدار السند</button>
+        <!-- 2. إدارة المستخدمين -->
+        <div id="users" class="tab-content">
+            <h3>إضافة مستخدم جديد</h3>
+            <div class="form-grid">
+                <div class="form-group"><label>اسم المستخدم الكامل</label><input type="text" id="uName"></div>
+                <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="uEmail"></div>
+                <div class="form-group"><label>رقم الهاتف</label><input type="text" id="uPhone"></div>
             </div>
+            <button class="btn btn-green" onclick="addUser()">إضافة وصرف الاعتماد</button>
+        </div>
+
+        <!-- 3. وكيل Master -->
+        <div id="master" class="tab-content">
+            <h3>قائمة الوكلاء الرئيسيّين</h3>
+            <table id="masterTable">
+                <thead><tr><th>#</th><th>اسم الوكالة</th><th>الرمز</th><th>الرصيد</th><th>الحالة</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- 4. نقاط البيع -->
+        <div id="pos" class="tab-content">
+            <h3>نقاط البيع (Merchant)</h3>
             <table>
-                <thead>
-                    <tr>
-                        <th>رقم الحركة</th>
-                        <th>النوع</th>
-                        <th>المرسل</th>
-                        <th>المستلم</th>
-                        <th>المبلغ</th>
-                        <th>مؤيد الصرف (السند)</th>
-                    </tr>
-                </thead>
-                <tbody id="transTableBody">
-                    <!-- سيتم تعبئتها ديناميكياً -->
+                <thead><tr><th>رقم النقطة</th><th>الاسم</th><th>التصنيف</th><th>العنوان</th><th>رقم الهاتف</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>مطعم وادي الضباب</td><td>مطعم</td><td>المنصورة</td><td>772300495</td></tr>
+                    <tr><td>2</td><td>مركز الأمل للإلكترونيات</td><td>تجاري</td><td>عدن</td><td>771234567</td></tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- 3. تبويب الوكلاء -->
-        <div id="agents" class="tab-content">
-            <h3>قائمة الوكلاء المعتمدين</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>اسم الوكالة</th>
-                        <th>رمز الوكيل</th>
-                        <th>رصيد الوكيل</th>
-                        <th>الحالة</th>
-                    </tr>
-                </thead>
-                <tbody id="agentsTableBody"></tbody>
+        <!-- 5. تسوية الحسابات -->
+        <div id="settlement" class="tab-content">
+            <h3>تنفيذ تسوية مالية</h3>
+            <div class="form-grid">
+                <div class="form-group"><label>من بريد/حساب المرسل</label><input type="text" id="sSender"></div>
+                <div class="form-group"><label>إلى بريد/حساب المستلم</label><input type="text" id="sReceiver"></div>
+                <div class="form-group"><label>المبلغ</label><input type="number" id="sAmount"></div>
+            </div>
+            <button class="btn btn-green" onclick="execSettlement()">تنفيذ القيد والتسوية</button>
+        </div>
+
+        <!-- 6. إدارة محافظ العملاء -->
+        <div id="customers" class="tab-content">
+            <h3>محافظ العملاء والحسابات</h3>
+            <table id="customersTable">
+                <thead><tr><th>الاسم</th><th>البريد الإلكتروني</th><th>الهاتف</th><th>الرصيد</th><th>الحالة</th><th>إجراء</th></tr></thead>
+                <tbody></tbody>
             </table>
         </div>
 
-        <!-- 4. تبويب الصلاحيات والإعدادات -->
-        <div id="settings" class="tab-content">
-            <h3>إعدادات النظام والصلاحيات العامة</h3>
-            <div class="form-group">
-                <label>الحد الأدنى للتحويل المالي:</label>
-                <input type="number" id="minLimit" value="100">
-            </div>
-            <div class="form-group">
-                <label>الحد الأقصى للتحويل المالي:</label>
-                <input type="number" id="maxLimit" value="100000">
-            </div>
-            <button class="btn" onclick="alert('تم حفظ الإعدادات بنجاح')">حفظ الإعدادات</button>
+        <!-- 7. إشعارات الوكلاء -->
+        <div id="agents" class="tab-content">
+            <h3>إشعارات الوكلاء</h3>
+            <p>لا توجد تنبيهات معلقة حالياً.</p>
         </div>
 
+        <!-- 8. حركات المحفظة -->
+        <div id="transactions" class="tab-content">
+            <h3>سجل حركات المحفظة</h3>
+            <table id="transTable">
+                <thead><tr><th>رقم الحركة</th><th>النوع</th><th>المرسل</th><th>المستلم</th><th>المبلغ</th><th>التاريخ</th><th>المستند</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- 9. التقارير -->
+        <div id="reports" class="tab-content">
+            <h3>التقارير المالية</h3>
+            <button class="btn" onclick="showAlert('جاري تصدير تقرير الحركات المالية...')">طباعة كشف الحساب العام</button>
+        </div>
+
+        <!-- 10. طلبات الموبايل -->
+        <div id="mobile" class="tab-content">
+            <h3>طلبات تطبيق الموبايل المعلقة</h3>
+            <table>
+                <thead><tr><th>رقم الطلب</th><th>العميل</th><th>رقم الحوالة</th><th>الإجراء</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td>22040397</td>
+                        <td>فاروق عبدالله مصلح</td>
+                        <td>600818496</td>
+                        <td>
+                            <button class="btn" onclick="showAlert('تم الاستعلام عن الحوالة رقم 600818496 بنجاح')">استعلام الحوالة</button>
+                            <button class="btn btn-orange" onclick="showAlert('تم فتح نموذج تحديث الهوية للعميل')">تحديث الهوية</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -160,32 +159,42 @@
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
-            loadData();
+            loadSystemData();
         }
 
-        // جلب البيانات وعرضها بالجداول
-        function loadData() {
+        function showAlert(msg) {
+            const alertBox = document.getElementById('statusAlert');
+            alertBox.innerText = msg;
+            alertBox.style.display = 'block';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 4000);
+        }
+
+        function loadSystemData() {
             // جلب العملاء
             fetch('/api/admin/users')
-                .then(res => res.json())
+                .then(r => r.json())
                 .then(data => {
-                    let tbody = document.getElementById('usersTableBody');
+                    let tbody = document.querySelector('#customersTable tbody');
+                    if(!tbody) return;
                     tbody.innerHTML = '';
                     data.users.forEach(u => {
                         tbody.innerHTML += `<tr>
                             <td>${u.name}</td>
-                            <td><span class="badge ${u.status === 'verified' ? 'badge-verified' : 'badge-pending'}">${u.status}</span></td>
+                            <td>${u.email}</td>
+                            <td>${u.phone}</td>
                             <td>${u.balance} ر.ي</td>
-                            <td><button class="btn" style="padding:3px 8px;" onclick="verifyUser(${u.id})">توثيق</button></td>
+                            <td>${u.status}</td>
+                            <td><button class="btn" onclick="verifyUser(${u.id})">تفعيل الحساب</button></td>
                         </tr>`;
                     });
-                });
+                }).catch(() => {});
 
-            // جلب الحوالات
+            // جلب الحركات
             fetch('/api/admin/transactions')
-                .then(res => res.json())
+                .then(r => r.json())
                 .then(data => {
-                    let tbody = document.getElementById('transTableBody');
+                    let tbody = document.querySelector('#transTable tbody');
+                    if(!tbody) return;
                     tbody.innerHTML = '';
                     data.transactions.forEach(t => {
                         tbody.innerHTML += `<tr>
@@ -193,45 +202,67 @@
                             <td>${t.type}</td>
                             <td>${t.sender}</td>
                             <td>${t.receiver}</td>
-                            <td>${t.amount}</td>
-                            <td><a href="#" target="_blank">${t.receiptDocument}</a></td>
+                            <td>${t.amount} ر.ي</td>
+                            <td>${t.date}</td>
+                            <td>${t.receiptDocument}</td>
                         </tr>`;
                     });
-                });
+                }).catch(() => {});
 
             // جلب الوكلاء
             fetch('/api/admin/agents')
-                .then(res => res.json())
+                .then(r => r.json())
                 .then(data => {
-                    let tbody = document.getElementById('agentsTableBody');
+                    let tbody = document.querySelector('#masterTable tbody');
+                    if(!tbody) return;
                     tbody.innerHTML = '';
                     data.agents.forEach(a => {
                         tbody.innerHTML += `<tr>
+                            <td>${a.id}</td>
                             <td>${a.agentName}</td>
                             <td>${a.code}</td>
                             <td>${a.balance} ر.ي</td>
                             <td>${a.status}</td>
                         </tr>`;
                     });
-                });
+                }).catch(() => {});
         }
 
-        function registerClient() {
-            const name = document.getElementById('clientName').value;
-            const email = document.getElementById('clientEmail').value;
-            const phone = document.getElementById('clientPhone').value;
+        function addUser() {
+            const name = document.getElementById('uName').value;
+            const email = document.getElementById('uEmail').value;
+            const phone = document.getElementById('uPhone').value;
 
             fetch('/api/admin/register-client', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, phone })
             })
-            .then(res => res.json())
+            .then(r => r.json())
             .then(data => {
-                let alertBox = document.getElementById('regAlert');
-                alertBox.style.display = 'block';
-                alertBox.innerText = data.message + " | " + data.smsNotification;
-                loadData();
+                showAlert(data.message + " | " + data.smsNotification);
+                loadSystemData();
+            });
+        }
+
+        function execSettlement() {
+            const senderEmail = document.getElementById('sSender').value;
+            const receiverEmail = document.getElementById('sReceiver').value;
+            const amount = Number(document.getElementById('sAmount').value);
+
+            fetch('/api/admin/transaction', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'transfer', senderEmail, receiverEmail, amount })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    showAlert(data.message);
+                } else {
+                    showAlert("خطأ: " + data.message);
+                }
+                loadSystemData();
             });
         }
 
@@ -241,32 +272,14 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, action: 'verify' })
             })
-            .then(res => res.json())
+            .then(r => r.json())
             .then(data => {
-                alert(data.message);
-                loadData();
+                showAlert(data.message);
+                loadSystemData();
             });
         }
 
-        function makeTransfer() {
-            const senderEmail = document.getElementById('senderIn').value;
-            const receiverEmail = document.getElementById('receiverIn').value;
-            const amount = Number(document.getElementById('amountIn').value);
-
-            fetch('/api/admin/transaction', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'transfer', senderEmail, receiverEmail, amount, receiptDocument: 'سند_صرف_جديد.pdf' })
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.message);
-                loadData();
-            });
-        }
-
-        // التحميل الأولي
-        loadData();
+        loadSystemData();
     </script>
 </body>
 </html>
