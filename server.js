@@ -4,6 +4,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
+// **الخطوة الجديدة:** السماح بقراءة الملفات الثابتة (مثل ملفات HTML والـ CSS) من نفس المجلد
+app.use(express.static(__dirname));
+
 // قاعدة بيانات مؤقتة متصلة بالذاكرة لتخزين العمليات والمستخدمين
 let users = [
     { id: 1, name: "عبدالله احمد قائد المسلمي", username: "abdullah_886", phone: "7777777777", balance: 50000, status: "نشط / موثق" }
@@ -16,6 +19,11 @@ let transactions = [
 let agents = [
     { id: 1, agentName: "Tamkeen Bank", code: "AG-1", balance: 500000, status: "نشط" }
 ];
+
+// مسار الصفحة الرئيسية لفتح النظام
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
 
 // مسار جلب المستخدمين
 app.get('/api/admin/users', (req, res) => {
