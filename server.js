@@ -4,94 +4,44 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// **الخطوة الجديدة:** السماح بقراءة الملفات الثابتة (مثل ملفات HTML والـ CSS) من نفس المجلد
+// قراءة الملفات الثابتة والصفحة الرئيسية
 app.use(express.static(__dirname));
 
-// قاعدة بيانات مؤقتة متصلة بالذاكرة لتخزين العمليات والمستخدمين
-let users = [
-    { id: 1, name: "عبدالله احمد قائد المسلمي", username: "abdullah_886", phone: "7777777777", balance: 50000, status: "نشط / موثق" }
-];
-
-let transactions = [
-    { transId: "TX-1001", type: "تحويل مالي", sender: "abdullah_886", receiver: "user_9921", amount: 1500, date: "2026-10-19", receipt: "سند_صرف_1001.pdf" }
-];
-
-let agents = [
-    { id: 1, agentName: "Tamkeen Bank", code: "AG-1", balance: 500000, status: "نشط" }
-];
-
-// مسار الصفحة الرئيسية لفتح النظام
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-// مسار جلب المستخدمين
-app.get('/api/admin/users', (req, res) => {
-    res.json({ status: "success", users });
-});
+// قائمة تخزين الطلبات الواردة من تطبيق العملاء الخارجي
+let clientRequests = [];
 
-// مسار تسجيل مستخدم/عميل جديد وتوليد الحسابات تلقائياً
-app.post('/api/admin/register-client', (req, res) => {
-    const { name, phone, branch } = req.body;
-    if (!name || !phone) {
-        return res.status(400).json({ status: "error", message: "الاسم ورقم الهاتف مطلوبان" });
+app.post('/api/client/submit-remittance', (req, res) => {
+    const { accountNumber, clientName, remittanceNum, serviceName, amount, currency } = req.body;
+    
+    if (!accountNumber || !remittanceNum) {
+        return res.status(400).json({ status: "error", message: "رقم الحساب ورقم الحوالة مطلوبان" });
     }
 
-    const randomId = Math.floor(1000 + Math.random() * 9000);
-    const username = "user_" + randomId;
-    const accountNumber = phone + "-" + (800 + Number(branch || 1));
-    const tempPass = "Pass@" + Math.floor(100 + Math.random() * 900);
-    const otpCode = Math.floor(1000 + Math.random() * 9000).toString();
-
-    const newUser = {
-        id: users.length + 1,
-        name,
-        username,
-        phone,
+    const newRequest = {
+        orderId: Math.floor(10000000 + Math.random() * 90000000),
+        date: new Date().toLocaleDateString('ar-EG'),
         accountNumber,
-        balance: 0,
-        status: "قيد التوثيق",
-        tempPass,
-        otpCode
+        clientName: clientName || "عميل تطبيق",
+        remittanceNum,
+        serviceName: serviceName || "حوالة عامة",
+        status: "معلق"
     };
 
-    users.push(newUser);
+    clientRequests.push(newRequest);
 
     res.json({
         status: "success",
-        message: `تم إنشاء الحساب بنجاح! اسم المستخدم: ${username} | رقم الحساب: ${accountNumber}`,
-        user: newUser
+        message: "تم إرسال طلب الحوالة بنجاح وهو قيد المراجعة.",
+        orderId: newRequest.orderId
     });
 });
 
-// مسار جلب الحركات المالية
-app.get('/api/admin/transactions', (req, res) => {
-    res.json({ status: "success", transactions });
-});
-
-// مسار تنفيذ التسوية أو الحوالة
-app.post('/api/admin/transaction', (req, res) => {
-    const { sender, receiver, amount } = req.body;
-    if (!sender || !receiver || !amount) {
-        return res.status(400).json({ status: "error", message: "جميع حقول التسوية مطلوبة" });
-    }
-
-    const newTrans = {
-        transId: "TX-" + Math.floor(1000 + Math.random() * 9000),
-        type: "تسوية حسابات",
-        sender,
-        receiver,
-        amount: Number(amount),
-        date: new Date().toISOString().split('T')[0],
-        receipt: "سند_تسوية_" + Math.floor(100 + Math.random() * 900) + ".pdf"
-    };
-
-    transactions.push(newTrans);
-    res.json({ status: "success", message: "تم تنفيذ التسوية وإصدار السند بنجاح!", transaction: newTrans });
-});
-
-app.get('/api/admin/agents', (req, res) => {
-    res.json({ status: "success", agents });
+app.get('/api/admin/get-requests', (req, res) => {
+    res.json({ status: "success", requests: clientRequests });
 });
 
 app.listen(PORT, () => {
