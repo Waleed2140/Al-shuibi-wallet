@@ -8,7 +8,7 @@
         * { box-sizing: border-box; font-family: Tahoma, Arial, sans-serif; }
         body { margin: 0; padding: 0; background-color: #f1f5f9; direction: rtl; text-align: right; }
 
-        /* --- تصميم شاشة الدخول --- */
+        /* شاشة الدخول */
         #loginScreen {
             display: flex;
             justify-content: center;
@@ -16,7 +16,6 @@
             min-height: 100vh;
             background: linear-gradient(135deg, #1e293b, #0f172a);
         }
-
         .login-card {
             background: #ffffff;
             padding: 30px;
@@ -26,72 +25,26 @@
             max-width: 380px;
             text-align: center;
         }
-
-        .login-card h2 {
-            margin-top: 0;
-            color: #1e293b;
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .login-card p {
-            color: #64748b;
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
-
-        .login-group {
-            display: flex;
-            flex-direction: column;
-            text-align: right;
-            margin-bottom: 15px;
-        }
-
-        .login-group label {
-            font-size: 12px;
-            font-weight: bold;
-            color: #475569;
-            margin-bottom: 5px;
-        }
-
-        .login-group input {
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            font-size: 13px;
-        }
-
-        .btn-login {
-            width: 100%;
-            padding: 10px;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
+        .login-card h2 { margin-top: 0; color: #1e293b; font-size: 18px; margin-bottom: 5px; }
+        .login-card p { color: #64748b; font-size: 12px; margin-bottom: 20px; }
+        .login-group { display: flex; flex-direction: column; text-align: right; margin-bottom: 15px; }
+        .login-group label { font-size: 12px; font-weight: bold; color: #475569; margin-bottom: 5px; }
+        .login-group input { padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; }
+        .btn-login { width: 100%; padding: 10px; background-color: #2563eb; color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 13px; cursor: pointer; }
         .btn-login:hover { background-color: #1d4ed8; }
         .login-error { color: #dc2626; font-size: 12px; margin-top: 10px; display: none; }
 
-        /* --- تصميم شاشة النظام الرئيسية (مخفية تلقائياً حتى تسجل الدخول) --- */
+        /* النظام الرئيسي */
         #mainSystem { display: none; }
-        
-        /* شريط التبويبات العلوي */
         .navbar { background-color: #e2e8f0; display: flex; align-items: center; overflow-x: auto; border-bottom: 2px solid #cbd5e1; padding: 5px; }
         .nav-tab { padding: 8px 12px; color: #1e293b; background: #fff; border: 1px solid #cbd5e1; cursor: pointer; font-size: 12px; font-weight: bold; white-space: nowrap; margin-left: 3px; border-radius: 3px; }
         .nav-tab:hover, .nav-tab.active { background-color: #2563eb; color: white; border-color: #1d4ed8; }
-
         .btn-logout { margin-right: auto; padding: 6px 12px; background-color: #dc2626; color: white; border: none; border-radius: 3px; font-size: 11px; font-weight: bold; cursor: pointer; }
         .btn-logout:hover { background-color: #b91c1c; }
 
         .container { padding: 15px; max-width: 1400px; margin: auto; }
         .tab-content { display: none; background: white; padding: 20px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .tab-content.active { display: block; }
-
         h3 { color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-top: 0; font-size: 16px; }
 
         .action-bar { display: flex; gap: 8px; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap; }
@@ -115,36 +68,33 @@
         .form-group label { font-size: 11px; font-weight: bold; margin-bottom: 4px; color: #475569; }
         .form-group input, .form-group select { padding: 7px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 12px; }
 
+        .docs-section { background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 4px; margin-top: 15px; margin-bottom: 20px; }
+        .docs-section h4 { margin: 0 0 10px 0; font-size: 13px; color: #1e293b; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; }
         .alert-box { padding: 10px; background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; border-radius: 4px; margin-bottom: 15px; font-size: 13px; display: none; }
     </style>
 </head>
 <body>
 
-    <!-- ================= 1. شاشة الدخول ================= -->
+    <!-- شاشة الدخول -->
     <div id="loginScreen">
         <div class="login-card">
             <h2>تسجيل الدخول للنظام المصرفي</h2>
             <p>ادخل اسم المستخدم وكلمة المرور للمتابعة</p>
-            
             <div class="login-group">
                 <label>اسم المستخدم</label>
-                <input type="text" id="loginUser" placeholder="مثال: admin">
+                <input type="text" id="loginUser" placeholder="admin">
             </div>
-            
             <div class="login-group">
                 <label>كلمة المرور</label>
                 <input type="password" id="loginPass" placeholder="••••••••">
             </div>
-
             <button class="btn-login" onclick="performLogin()">تسجيل الدخول</button>
             <div id="loginError" class="login-error">اسم المستخدم أو كلمة المرور غير صحيحة!</div>
         </div>
     </div>
 
-
-    <!-- ================= 2. شاشة النظام الرئيسية ================= -->
+    <!-- شاشة النظام الرئيسية -->
     <div id="mainSystem">
-        <!-- شريط التبويبات العلوي المتكامل -->
         <div class="navbar">
             <button class="nav-tab active" onclick="openTab('mobile', event)">طلبات الحوالات والموبايل</button>
             <button class="nav-tab" onclick="openTab('customers', event)">إدارة محافظ العملاء (KYC)</button>
@@ -152,20 +102,32 @@
             <button class="nav-tab" onclick="openTab('transactions', event)">حركات المحفظة</button>
             <button class="nav-tab" onclick="openTab('reports', event)">التقارير المالية والحسابات</button>
             <button class="nav-tab" onclick="openTab('users', event)">إدارة المستخدمين والصلاحيات</button>
-            
             <button class="btn-logout" onclick="performLogout()">تسجيل الخروج</button>
         </div>
 
         <div class="container">
             <div id="alertBox" class="alert-box"></div>
 
-            <!-- 1. شاشة طلبات الحوالات والموبايل -->
+            <!-- 1. طلبات الحوالات والموبايل -->
             <div id="mobile" class="tab-content active">
-                <h3>شاشة طلبات الحوالات والموبايل (إدارة الحوالات والبحث في الشبكات)</h3>
-                <div class="action-bar">
-                    <button class="btn-action btn-primary" onclick="showAlert('عرض جميع طلبات الحوالات المعلقة')">جميع الطلبات</button>
-                    <button class="btn-action" onclick="showAlert('جاري تحديث القائمة والبحث في الشبكات...')">تحديث الشبكات</button>
+                <h3>شاشة طلبات الحوالات والموبايل والبحث في الشبكات</h3>
+                <div class="docs-section">
+                    <h4>تقديم / رفع طلب حوالة جديد للمراجعة والتحقق</h4>
+                    <div class="form-grid">
+                        <div class="form-group"><label>رقم حساب العميل</label><input type="text" id="reqAccNum" placeholder="774726501"></div>
+                        <div class="form-group"><label>اسم العميل</label><input type="text" id="reqClientName" placeholder="اسم العميل الرباعي"></div>
+                        <div class="form-group"><label>رقم الحوالة</label><input type="text" id="reqRemittanceNum" placeholder="رقم الحوالة"></div>
+                        <div class="form-group"><label>اسم الخدمة</label>
+                            <select id="reqServiceName">
+                                <option>سداد يمن موبايل</option>
+                                <option>حوالة النجم السريع</option>
+                                <option>حوالة خارجية</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-blue" onclick="addNewRemittanceRequest()">إرسال الطلب للنظام للمراجعة</button>
                 </div>
+
                 <table>
                     <thead>
                         <tr>
@@ -191,7 +153,7 @@
                             <td>774726501</td>
                             <td>فاروق عبدالله مصلح</td>
                             <td>600818496</td>
-                            <td><input type="text" style="width: 80px; padding: 3px;" placeholder="أدخل مرجع" id="ref-22040397"></td>
+                            <td><input type="text" style="width: 80px; padding: 3px;" placeholder="مرجع" id="ref-22040397"></td>
                             <td>سداد يمن موبايل</td>
                             <td>
                                 <button class="btn btn-blue" onclick="queryNetwork('22040397')">استعلام</button>
@@ -212,14 +174,20 @@
             <div id="customers" class="tab-content">
                 <h3>إدارة محافظ العملاء وتسجيل الهويات وتوليد الحسابات (KYC)</h3>
                 <div class="action-bar">
-                    <button class="btn-action btn-primary" onclick="saveCustomerData()">حفظ وتوليد الحساب</button>
+                    <button class="btn-action btn-primary" onclick="saveCustomerData()">حفظ وتوليد رقم الحساب تلقائياً</button>
                 </div>
                 <div class="form-grid">
                     <div class="form-group"><label>الاسم الأول</label><input type="text" id="cFirst"></div>
                     <div class="form-group"><label>اسم الاب</label><input type="text" id="cFather"></div>
                     <div class="form-group"><label>اسم الجد</label><input type="text" id="cGrand"></div>
                     <div class="form-group"><label>اللقب</label><input type="text" id="cLastName"></div>
-                    <div class="form-group"><label>نوع المحفظة / العملة</label><select id="cWalletType"><option value="886">ريال يمني (886)</option><option value="SAR">ريال سعودي (SAR)</option><option value="USD">دولار أمريكي (USD)</option></select></div>
+                    <div class="form-group"><label>نوع المحفظة / العملة</label>
+                        <select id="cWalletType">
+                            <option value="886">ريال يمني (886)</option>
+                            <option value="SAR">ريال سعودي (SAR)</option>
+                            <option value="USD">دولار أمريكي (USD)</option>
+                        </select>
+                    </div>
                     <div class="form-group"><label>الموبايل</label><input type="text" id="cPhone"></div>
                     <div class="form-group"><label>العنوان</label><input type="text" id="cAddress"></div>
                     <div class="form-group"><label>رقم الهوية</label><input type="text" id="cIdNum"></div>
@@ -231,7 +199,7 @@
                             <th>اسم العميل الرباعي</th>
                             <th>الموبايل</th>
                             <th>رقم الهوية</th>
-                            <th>العملة والنوع</th>
+                            <th>العملة</th>
                             <th>الحالة</th>
                         </tr>
                     </thead>
@@ -255,7 +223,7 @@
                     <div class="form-group"><label>العملة</label><select id="sCurr"><option>ريال يمني (886)</option><option>ريال سعودي (SAR)</option><option>دولار أمريكي (USD)</option></select></div>
                     <div class="form-group"><label>حساب المرسل</label><input type="text" id="sSender" placeholder="رقم الحساب"></div>
                     <div class="form-group"><label>حساب المستلم</label><input type="text" id="sReceiver" placeholder="رقم الحساب"></div>
-                    <div class="form-group"><label>المبلغ</label><input type="number" id="sAmount" placeholder="المبلغ المراد تسويته"></div>
+                    <div class="form-group"><label>المبلغ</label><input type="number" id="sAmount" placeholder="المبلغ"></div>
                 </div>
                 <button class="btn btn-green" style="padding: 8px 16px;" onclick="execSettlement()">تنفيذ القيود المالية</button>
             </div>
@@ -263,16 +231,16 @@
             <!-- 4. حركات المحفظة -->
             <div id="transactions" class="tab-content">
                 <h3>سجل حركات المحفظة المالية</h3>
-                <p>عرض كافة الحركات المعتمدة والمنفذة بحسب التاريخ والعملة وتأثيرها المباشر على الحسابات.</p>
+                <p>عرض كافة الحركات المعتمدة والمنفذة بحسب التاريخ والعملة.</p>
             </div>
 
             <!-- 5. التقارير المالية -->
             <div id="reports" class="tab-content">
-                <h3>التقارير المالية وحركة الحسابات (إجمالي وتفصيلي)</h3>
+                <h3>التقارير المالية وحركة الحسابات</h3>
                 <div class="form-grid">
-                    <div class="form-group"><label>اختر الحساب</label><select id="repAccount"><option>جميع الحسابات (إجمالي)</option><option>775538995-886 (عبدالله المسلمي)</option></select></div>
-                    <div class="form-group"><label>العملة</label><select id="repCurr"><option>جميع العملات</option><option>ريال يمني (886)</option><option>ريال سعودي (SAR)</option></select></div>
-                    <div class="form-group" style="justify-content: flex-end;"><button class="btn btn-blue" style="padding: 7px;" onclick="showAlert('تم تحديث التقرير المالي بنجاح')">عرض التقرير</button></div>
+                    <div class="form-group"><label>اختر الحساب</label><select id="repAccount"><option>جميع الحسابات (إجمالي)</option><option>775538995-886</option></select></div>
+                    <div class="form-group"><label>العملة</label><select id="repCurr"><option>جميع العملات</option><option>ريال يمني (886)</option></select></div>
+                    <div class="form-group" style="justify-content: flex-end;"><button class="btn btn-blue" style="padding: 7px;" onclick="showAlert('تم تحديث التقرير بنجاح')">عرض التقرير</button></div>
                 </div>
                 <table>
                     <thead>
@@ -283,7 +251,7 @@
                             <th>إجمالي المدين</th>
                             <th>إجمالي الدائن</th>
                             <th>الرصيد الحالي</th>
-                            <th>حالة التأثير المالي</th>
+                            <th>الحالة</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -294,7 +262,7 @@
                             <td>150,000</td>
                             <td>200,000</td>
                             <td><strong>+50,000</strong></td>
-                            <td style="color: #16a34a; font-weight: bold;">متوازن / نشط</td>
+                            <td style="color: #16a34a; font-weight: bold;">متوازن</td>
                         </tr>
                     </tbody>
                 </table>
@@ -303,15 +271,13 @@
             <!-- 6. إدارة المستخدمين -->
             <div id="users" class="tab-content">
                 <h3>إدارة المستخدمين وصلاحيات النظام</h3>
-                <div class="action-bar">
-                    <button class="btn-action btn-primary" onclick="addUserPrompt()">إضافة مستخدم جديد</button>
-                </div>
+                <div class="action-bar"><button class="btn-action btn-primary" onclick="addUserPrompt()">إضافة مستخدم جديد</button></div>
                 <table>
                     <thead>
                         <tr>
                             <th>اسم المستخدم</th>
                             <th>البريد الإلكتروني</th>
-                            <th>الدور والصلاحيات</th>
+                            <th>الصلاحية</th>
                             <th>الحالة</th>
                             <th>الإجراءات</th>
                         </tr>
@@ -320,9 +286,9 @@
                         <tr>
                             <td>admin</td>
                             <td>admin@system.com</td>
-                            <td>مدير النظام الكامل (Full Control)</td>
+                            <td>مدير النظام الكامل</td>
                             <td style="color: #16a34a; font-weight: bold;">نشط</td>
-                            <td><button class="btn btn-amber" onclick="showAlert('تعديل صلاحيات المستخدم')">تعديل الصلاحيات</button></td>
+                            <td><button class="btn btn-amber" onclick="showAlert('تعديل الصلاحيات')">تعديل</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -331,25 +297,19 @@
         </div>
     </div>
 
-    <!-- ================= 3. الأكواد والوظائف البرمجية ================= -->
+    <!-- الدوال البرمجية والربط -->
     <script>
-        // --- دالة تسجيل الدخول ---
         function performLogin() {
-            const user = document.getElementById('loginUser').value;
-            const pass = document.getElementById('loginPass').value;
-            const errorBox = document.getElementById('loginError');
-
-            // يمكنك تغيير اسم المستخدم وكلمة المرور من هنا (أو تركها فارغة لتسجيل الدخول السريع)
-            if((user === "admin" && pass === "123456") || (user === "" && pass === "")) {
+            const u = document.getElementById('loginUser').value;
+            const p = document.getElementById('loginPass').value;
+            if((u === "admin" && p === "123456") || (u === "" && p === "")) {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('mainSystem').style.display = 'block';
-                errorBox.style.display = 'none';
             } else {
-                errorBox.style.display = 'block';
+                document.getElementById('loginError').style.display = 'block';
             }
         }
 
-        // --- دالة تسجيل الخروج ---
         function performLogout() {
             if(confirm("هل أنت متأكد من تسجيل الخروج؟")) {
                 document.getElementById('mainSystem').style.display = 'none';
@@ -358,7 +318,6 @@
             }
         }
 
-        // --- التبديل بين التبويبات ---
         function openTab(tabId, evt) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -373,26 +332,69 @@
             setTimeout(() => box.style.display = 'none', 4000);
         }
 
+        function addNewRemittanceRequest() {
+            const acc = document.getElementById('reqAccNum').value;
+            const name = document.getElementById('reqClientName').value;
+            const remNum = document.getElementById('reqRemittanceNum').value;
+            const service = document.getElementById('reqServiceName').value;
+
+            if(!acc || !name || !remNum) {
+                alert("يرجى ملء بيانات الطلب الأساسية!");
+                return;
+            }
+
+            const orderId = Math.floor(10000000 + Math.random() * 90000000);
+            const today = new Date().toLocaleDateString('ar-EG');
+            const tbody = document.getElementById('remittanceTable');
+            
+            const newRow = `
+                <tr id="row-${orderId}">
+                    <td>${orderId}</td>
+                    <td>${today}</td>
+                    <td>${acc}</td>
+                    <td>${name}</td>
+                    <td>${remNum}</td>
+                    <td><input type="text" style="width: 80px; padding: 3px;" placeholder="مرجع" id="ref-${orderId}"></td>
+                    <td>${service}</td>
+                    <td>
+                        <button class="btn btn-blue" onclick="queryNetwork('${orderId}')">استعلام</button>
+                        <button class="btn btn-green" onclick="executeOrder('${orderId}')">تنفيذ</button>
+                        <button class="btn btn-danger" onclick="rejectOrder('${orderId}')">رفض</button>
+                    </td>
+                    <td id="rec-${orderId}">-</td>
+                    <td id="send-${orderId}">-</td>
+                    <td id="amt-${orderId}">-</td>
+                    <td id="curr-${orderId}">-</td>
+                    <td class="status-cell" style="color:#d97706; font-weight:bold;">معلق</td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('afterbegin', newRow);
+            showAlert("تم تقديم طلب الحوالة رقم (" + orderId + ") بنجاح للنظام!");
+            
+            document.getElementById('reqAccNum').value = '';
+            document.getElementById('reqClientName').value = '';
+            document.getElementById('reqRemittanceNum').value = '';
+        }
+
         function queryNetwork(orderId) {
             const manualRef = document.getElementById('ref-' + orderId).value;
             if(!manualRef) {
-                alert("يرجى إدخال الرقم المرجعي يدويّاً أولاً للبحث في الشبكات!");
+                alert("يرجى إدخال الرقم المرجعي يدويّاً للبحث في الشبكات!");
                 return;
             }
             document.getElementById('rec-' + orderId).innerText = "محمد أحمد القادم";
             document.getElementById('send-' + orderId).innerText = "فاروق عبدالله مصلح";
             document.getElementById('amt-' + orderId).innerText = "50,000";
             document.getElementById('curr-' + orderId).innerText = "ريال يمني (886)";
-
-            showAlert("تم البحث في شبكات التحويل بنجاح عبر المرجع (" + manualRef + ") وجلب بيانات الحوالة!");
+            showAlert("تم الاستعلام بنجاح وجلب تفاصيل الحوالة من الشبكة عبر المرجع (" + manualRef + ")");
         }
 
         function executeOrder(orderId) {
-            if(confirm("هل أنت متأكد من تنفيذ واعتماد الحوالة رقم " + orderId + " مالياً؟")) {
+            if(confirm("هل أنت متأكد من تنفيذ واعتماد الحوالة رقم " + orderId + "؟")) {
                 const row = document.getElementById('row-' + orderId);
                 row.querySelector('.status-cell').innerText = "منفذ / مكتمل";
                 row.querySelector('.status-cell').style.color = "#16a34a";
-                showAlert("تم تنفيذ الحركة رقم " + orderId + " بنجاح وتحديث الحسابات!");
+                showAlert("تم تنفيذ الطلب بنجاح وتحديث الحسابات!");
             }
         }
 
@@ -401,7 +403,7 @@
                 const row = document.getElementById('row-' + orderId);
                 row.querySelector('.status-cell').innerText = "مرفوض";
                 row.querySelector('.status-cell').style.color = "#dc2626";
-                showAlert("تم رفض الطلب رقم " + orderId + ".");
+                showAlert("تم رفض الطلب.");
             }
         }
 
@@ -415,7 +417,7 @@
             const currType = document.getElementById('cWalletType').value;
 
             if(!f || !phone || !idNum) {
-                alert("يرجى إدخال البيانات الأساسية للعميل!");
+                alert("يرجى إدخال بيانات العميل الأساسية!");
                 return;
             }
 
@@ -438,28 +440,21 @@
             const sender = document.getElementById('sSender').value;
             const receiver = document.getElementById('sReceiver').value;
             const amount = document.getElementById('sAmount').value;
-            const curr = document.getElementById('sCurr').value;
-
             if(!sender || !receiver || !amount) {
-                alert("يرجى ملء كافة بيانات التسوية!");
+                alert("يرجى ملء بيانات التسوية!");
                 return;
             }
-            showAlert(`تمت تسوية القيود المالية بمبلغ ${amount} ${curr} بنجاح!`);
+            showAlert("تمت تسوية القيود المالية بنجاح!");
         }
 
         function addUserPrompt() {
-            const username = prompt("أدخل اسم المستخدم الجديد:");
-            const email = prompt("أدخل البريد الإلكتروني للمستخدم:");
+            const username = prompt("اسم المستخدم الجديد:");
+            const email = prompt("البريد الإلكتروني:");
             if(username && email) {
-                const tbody = document.getElementById('usersTableBody');
-                tbody.innerHTML += `<tr>
-                    <td>${username}</td>
-                    <td>${email}</td>
-                    <td>مسؤول عمليات (Operator)</td>
-                    <td style="color: #16a34a; font-weight: bold;">نشط</td>
-                    <td><button class="btn btn-amber" onclick="showAlert('تم التعديل')">تعديل الصلاحيات</button></td>
+                document.getElementById('usersTableBody').innerHTML += `<tr>
+                    <td>${username}</td><td>${email}</td><td>مشغل عمليات</td><td style="color:#16a34a; font-weight:bold;">نشط</td><td><button class="btn btn-amber" onclick="showAlert('تم')">تعديل</button></td>
                 </tr>`;
-                showAlert("تمت إضافة المستخدم الجديد بنجاح!");
+                showAlert("تمت إضافة المستخدم بنجاح!");
             }
         }
     </script>
