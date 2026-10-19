@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WALLET MANAGEMENT SYS. - نظام إدارة المحفظة</title>
+    <title>WALLET MANAGEMENT SYS. - نظام إدارة المحفظة المصرفية</title>
     <style>
         * { box-sizing: border-box; font-family: Tahoma, Arial, sans-serif; }
         body { margin: 0; padding: 0; background-color: #f1f5f9; direction: rtl; text-align: right; }
         
+        /* شريط التبويبات العلوي */
         .navbar { background-color: #e2e8f0; display: flex; overflow-x: auto; border-bottom: 2px solid #cbd5e1; padding: 5px; }
         .nav-tab { padding: 8px 12px; color: #1e293b; background: #fff; border: 1px solid #cbd5e1; cursor: pointer; font-size: 12px; font-weight: bold; white-space: nowrap; margin-left: 3px; border-radius: 3px; }
         .nav-tab:hover, .nav-tab.active { background-color: #2563eb; color: white; border-color: #1d4ed8; }
@@ -18,93 +19,215 @@
 
         h3 { color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-top: 0; font-size: 16px; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: center; font-size: 12px; }
+        /* أزرار العمليات العلوية */
+        .action-bar { display: flex; gap: 8px; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; flex-wrap: wrap; }
+        .btn-action { padding: 6px 12px; background-color: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 3px; cursor: pointer; font-size: 12px; font-weight: bold; color: #1e293b; }
+        .btn-action:hover { background-color: #cbd5e1; }
+        .btn-primary { background-color: #2563eb; color: white; border-color: #1d4ed8; }
+
+        /* الجداول والشبكات */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: center; font-size: 11px; }
         th { background-color: #f8fafc; color: #334155; }
         tr:nth-child(even) { background-color: #fcfcfc; }
         
-        .btn { padding: 6px 14px; background-color: #2563eb; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px; }
-        .btn:hover { background-color: #1d4ed8; }
-        .btn-green { background-color: #16a34a; }
+        /* أزرار الجدول */
+        .btn { padding: 4px 8px; border: none; border-radius: 3px; cursor: pointer; font-size: 11px; font-weight: bold; margin: 2px; }
+        .btn-blue { background-color: #2563eb; color: white; }
+        .btn-blue:hover { background-color: #1d4ed8; }
+        .btn-amber { background-color: #d97706; color: white; }
+        .btn-amber:hover { background-color: #b45309; }
+        .btn-green { background-color: #16a34a; color: white; }
+        .btn-green:hover { background-color: #15803d; }
+        .btn-danger { background-color: #dc2626; color: white; }
+        .btn-danger:hover { background-color: #b91c1c; }
 
-        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
+        .form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 15px; }
         .form-group { display: flex; flex-direction: column; }
-        .form-group label { font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #475569; }
-        .form-group input, .form-group select { padding: 8px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 12px; }
+        .form-group label { font-size: 11px; font-weight: bold; margin-bottom: 4px; color: #475569; }
+        .form-group input, .form-group select { padding: 7px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 12px; }
+
+        .docs-section { background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 4px; margin-top: 15px; }
+        .docs-section h4 { margin: 0 0 10px 0; font-size: 13px; color: #1e293b; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; }
         
         .alert-box { padding: 10px; background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; border-radius: 4px; margin-bottom: 15px; font-size: 13px; display: none; }
     </style>
 </head>
 <body>
 
+    <!-- شريط التبويبات العلوي المتكامل -->
     <div class="navbar">
-        <button class="nav-tab active" onclick="openTab('users', event)">إدارة المستخدمين وتوليد الحسابات</button>
+        <button class="nav-tab active" onclick="openTab('mobile', event)">طلبات الموبايل والحوالات</button>
         <button class="nav-tab" onclick="openTab('customers', event)">إدارة محافظ العملاء (KYC)</button>
         <button class="nav-tab" onclick="openTab('settlement', event)">تسوية الحسابات</button>
         <button class="nav-tab" onclick="openTab('transactions', event)">حركات المحفظة</button>
+        <button class="nav-tab" onclick="openTab('users', event)">إدارة المستخدمين</button>
     </div>
 
     <div class="container">
         <div id="alertBox" class="alert-box"></div>
 
-        <!-- 1. إدارة المستخدمين وتوليد الحسابات -->
-        <div id="users" class="tab-content active">
-            <h3>إضافة مستخدم جديد وتوليد اليوزرات ورقم الحساب تلقائياً</h3>
-            <div class="form-grid">
-                <div class="form-group"><label>اسم العميل الرباعي</label><input type="text" id="fullName" placeholder="الاسم الكامل"></div>
-                <div class="form-group"><label>رقم الجوال</label><input type="text" id="phoneNum" placeholder="77xxxxxxxx"></div>
-                <div class="form-group"><label>رقم الفرع</label><input type="text" id="branchId" value="1"></div>
+        <!-- 1. شاشة طلبات الموبايل والحوالات (تضم العملة، المرسل، المستلم، زر التنفيذ، وزر الرفض) -->
+        <div id="mobile" class="tab-content active">
+            <h3>شاشة طلبات الحوالات والموبايل (إدارة الحوالات والعمليات الواردة)</h3>
+
+            <!-- أزرار الفلترة والتحكم -->
+            <div class="action-bar">
+                <button class="btn-action btn-primary" onclick="showAlert('عرض جميع طلبات الحوالات المعلقة')">جميع الطلبات</button>
+                <button class="btn-action" onclick="showAlert('جاري تحديث القائمة...')">تحديث</button>
+                <button class="btn-action" onclick="showAlert('عرض الطلبات المكتملة فقط')">الطلبات المكتملة</button>
             </div>
-            <button class="btn btn-green" onclick="generateAccount()">توليد الحساب وإصدار بيانات الاعتماد</button>
+
+            <!-- جدول الحوالات المفصل -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم الطلب</th>
+                        <th>تاريخ الطلب</th>
+                        <th>المرسل (الحساب / الاسم)</th>
+                        <th>المستلم (الحساب / الاسم)</th>
+                        <th>المبلغ</th>
+                        <th>العملة</th>
+                        <th>رقم الحوالة / المرجع</th>
+                        <th>اسم الخدمة</th>
+                        <th>حالة الطلب</th>
+                        <th>الإجراءات والتحكم</th>
+                    </tr>
+                </thead>
+                <tbody id="remittanceTable">
+                    <tr id="row-22040397">
+                        <td>22040397</td>
+                        <td>19/10/2026 01:30 ص</td>
+                        <td>774726501<br><span style="color:#64748b;">فاروق عبدالله مصلح</span></td>
+                        <td>775329825<br><span style="color:#64748b;">محمد القادم أحمد</span></td>
+                        <td><strong>50,000</strong></td>
+                        <td>ريال يمني (886)</td>
+                        <td>600818496</td>
+                        <td>سداد يمن موبايل</td>
+                        <td class="status-cell" style="color:#d97706; font-weight:bold;">معلق</td>
+                        <td>
+                            <button class="btn btn-blue" onclick="showAlert('تم الاستعلام عن الحوالة رقم 600818496 بنجاح')">استعلام</button>
+                            <button class="btn btn-amber" onclick="showAlert('تم فتح نموذج تحديث الهوية')">تحديث الهوية</button>
+                            <button class="btn btn-green" onclick="executeOrder('22040397')">تنفيذ</button>
+                            <button class="btn btn-danger" onclick="rejectOrder('22040397')">رفض</button>
+                        </td>
+                    </tr>
+                    <tr id="row-503234815">
+                        <td>503234815</td>
+                        <td>19/10/2026 01:44 ص</td>
+                        <td>736344416<br><span style="color:#64748b;">ماجد علي محسن</span></td>
+                        <td>779870870<br><span style="color:#64748b;">حلال علي قايد</span></td>
+                        <td><strong>350</strong></td>
+                        <td>ريال سعودي (SAR)</td>
+                        <td>2341492900</td>
+                        <td>حوالة خارجية سريعة</td>
+                        <td class="status-cell" style="color:#d97706; font-weight:bold;">معلق</td>
+                        <td>
+                            <button class="btn btn-blue" onclick="showAlert('تم الاستعلام عن الحوالة بنجاح')">استعلام</button>
+                            <button class="btn btn-amber" onclick="showAlert('تم فتح نموذج تحديث الهوية')">تحديث الهوية</button>
+                            <button class="btn btn-green" onclick="executeOrder('503234815')">تنفيذ</button>
+                            <button class="btn btn-danger" onclick="rejectOrder('503234815')">رفض</button>
+                        </td>
+                    </tr>
+                    <tr id="row-262034312">
+                        <td>262034312</td>
+                        <td>18/10/2026 09:50 ص</td>
+                        <td>776636090<br><span style="color:#64748b;">ايمان محمد محرز</span></td>
+                        <td>776992057<br><span style="color:#64748b;">المنتصر عباس</span></td>
+                        <td><strong>100</strong></td>
+                        <td>دولار أمريكي (USD)</td>
+                        <td>668378608</td>
+                        <td>حوالة دولية</td>
+                        <td class="status-cell" style="color:#d97706; font-weight:bold;">معلق</td>
+                        <td>
+                            <button class="btn btn-blue" onclick="showAlert('تم الاستعلام بنجاح')">استعلام</button>
+                            <button class="btn btn-amber" onclick="showAlert('تم فتح نموذج تحديث الهوية')">تحديث الهوية</button>
+                            <button class="btn btn-green" onclick="executeOrder('262034312')">تنفيذ</button>
+                            <button class="btn btn-danger" onclick="rejectOrder('262034312')">رفض</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
-        <!-- 2. محافظ العملاء -->
+        <!-- 2. شاشة إدارة محافظ العملاء (KYC) -->
         <div id="customers" class="tab-content">
-            <h3>قائمة محافظ العملاء المحدثة</h3>
+            <h3>إدارة محافظ العملاء وتسجيل الهويات (KYC)</h3>
+
+            <div class="action-bar">
+                <button class="btn-action btn-primary" onclick="showAlert('تم تفعيل وضع الإضافة الجديد')">إضافة جديد</button>
+                <button class="btn-action" onclick="showAlert('تم تفعيل وضع التعديل')">تعديل</button>
+                <button class="btn-action" onclick="saveCustomerData()">حفظ</button>
+                <button class="btn-action btn-danger" onclick="showAlert('تم رفض إنشاء الطلب بنجاح')">رفض إنشاء الطلب</button>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group"><label>الاسم الأول</label><input type="text" id="cFirst" value="عبدالله"></div>
+                <div class="form-group"><label>اسم الاب</label><input type="text" id="cFather" value="احمد"></div>
+                <div class="form-group"><label>اسم الجد</label><input type="text" id="cGrand" value="قائد"></div>
+                <div class="form-group"><label>اللقب</label><input type="text" id="cLastName" value="المسلمي"></div>
+                <div class="form-group"><label>نوع المحفظة</label><select id="cWalletType"><option>حساب مصرفي</option><option>محفظة إلكترونية</option></select></div>
+                <div class="form-group"><label>الموبايل</label><input type="text" id="cPhone" value="772301137"></div>
+                <div class="form-group"><label>العنوان</label><input type="text" id="cAddress" value="المنصورة / عدن"></div>
+                <div class="form-group"><label>تاريخ الميلاد</label><input type="text" value="06/01/1999"></div>
+            </div>
+
+            <div class="docs-section">
+                <h4>بيانات الهوية الرسمية والوثائق</h4>
+                <div class="form-grid">
+                    <div class="form-group"><label>رقم الهوية</label><input type="text" id="cIdNum" value="84259115530"></div>
+                    <div class="form-group"><label>تاريخ الإصدار</label><input type="text" value="18/12/2025"></div>
+                    <div class="form-group"><label>تاريخ الانتهاء</label><input type="text" value="18/12/2031"></div>
+                    <div class="form-group"><label>مكان الإصدار</label><input type="text" value="مصلحة الأحوال المدنية"></div>
+                </div>
+            </div>
+
             <table>
                 <thead>
                     <tr>
                         <th>رقم الحساب</th>
-                        <th>اسم العميل</th>
-                        <th>اسم المستخدم</th>
-                        <th>رقم الجوال</th>
-                        <th>الرصيد</th>
+                        <th>اسم العميل الرباعي</th>
+                        <th>الموبايل</th>
+                        <th>رقم الهوية</th>
                         <th>الحالة</th>
                     </tr>
                 </thead>
-                <tbody id="clientTableBody"></tbody>
+                <tbody id="customersTableBody">
+                    <tr>
+                        <td>775538995-886</td>
+                        <td>عبدالله احمد قائد المسلمي</td>
+                        <td>772301137</td>
+                        <td>84259115530</td>
+                        <td>نشط / موثق</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
 
-        <!-- 3. تسوية الحسابات -->
+        <!-- 3. تسوية الحسابات مع العملات -->
         <div id="settlement" class="tab-content">
-            <h3>تنفيذ تسوية مالية</h3>
+            <h3>تسوية الحسابات والقيود اليومية</h3>
             <div class="form-grid">
-                <div class="form-group"><label>حساب المرسل</label><input type="text" id="sSender" placeholder="يوزر أو رقم حساب المرسل"></div>
-                <div class="form-group"><label>حساب المستلم</label><input type="text" id="sReceiver" placeholder="يوزر أو رقم حساب المستلم"></div>
+                <div class="form-group"><label>العملة</label><select id="sCurr"><option>ريال يمني (886)</option><option>ريال سعودي (SAR)</option><option>دولار أمريكي (USD)</option></select></div>
+                <div class="form-group"><label>حساب المرسل</label><input type="text" id="sSender" placeholder="رقم الحساب"></div>
+                <div class="form-group"><label>حساب المستلم</label><input type="text" id="sReceiver" placeholder="رقم الحساب"></div>
                 <div class="form-group"><label>المبلغ</label><input type="number" id="sAmount" placeholder="المبلغ المراد تسويته"></div>
             </div>
-            <button class="btn btn-green" onclick="execSettlement()">تنفيذ وتوثيق القيد</button>
+            <button class="btn btn-green" style="padding: 8px 16px;" onclick="execSettlement()">تنفيذ القيود المالية</button>
         </div>
 
         <!-- 4. حركات المحفظة -->
         <div id="transactions" class="tab-content">
-            <h3>سجل الحركات المالية ومؤيدات الصرف</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>رقم الحركة</th>
-                        <th>النوع</th>
-                        <th>المرسل</th>
-                        <th>المستلم</th>
-                        <th>المبلغ</th>
-                        <th>التاريخ</th>
-                        <th>السند</th>
-                    </tr>
-                </thead>
-                <tbody id="transTableBody"></tbody>
-            </table>
+            <h3>سجل حركات المحفظة المالية</h3>
+            <p>عرض كافة الحركات المعتمدة والمنفذة بحسب التاريخ والعملة.</p>
         </div>
+
+        <!-- 5. إدارة المستخدمين -->
+        <div id="users" class="tab-content">
+            <h3>إدارة المستخدمين والصلاحيات</h3>
+            <p>إدارة حسابات المسؤولين وتوزيع الأدوار.</p>
+        </div>
+
     </div>
 
     <script>
@@ -113,95 +236,74 @@
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             evt.currentTarget.classList.add('active');
-            loadData();
         }
 
         function showAlert(msg) {
             const box = document.getElementById('alertBox');
             box.innerText = msg;
             box.style.display = 'block';
-            setTimeout(() => box.style.display = 'none', 5000);
+            setTimeout(() => box.style.display = 'none', 4000);
         }
 
-        function loadData() {
-            // جلب العملاء
-            fetch('/api/admin/users')
-                .then(r => r.json())
-                .then(data => {
-                    let tbody = document.getElementById('clientTableBody');
-                    tbody.innerHTML = '';
-                    data.users.forEach(u => {
-                        tbody.innerHTML += `<tr>
-                            <td>${u.accountNumber || 'رئيسي'}</td>
-                            <td>${u.name}</td>
-                            <td>${u.username}</td>
-                            <td>${u.phone}</td>
-                            <td>${u.balance} ر.ي</td>
-                            <td>${u.status}</td>
-                        </tr>`;
-                    });
-                }).catch(() => {});
-
-            // جلب الحركات
-            fetch('/api/admin/transactions')
-                .then(r => r.json())
-                .then(data => {
-                    let tbody = document.getElementById('transTableBody');
-                    tbody.innerHTML = '';
-                    data.transactions.forEach(t => {
-                        tbody.innerHTML += `<tr>
-                            <td>${t.transId}</td>
-                            <td>${t.type}</td>
-                            <td>${t.sender}</td>
-                            <td>${t.receiver}</td>
-                            <td>${t.amount} ر.ي</td>
-                            <td>${t.date}</td>
-                            <td><a href="#" style="color:#2563eb;">${t.receipt}</a></td>
-                        </tr>`;
-                    });
-                }).catch(() => {});
-        }
-
-        function generateAccount() {
-            const name = document.getElementById('fullName').value;
-            const phone = document.getElementById('phoneNum').value;
-            const branch = document.getElementById('branchId').value;
-
-            if(!name || !phone) {
-                alert("الرجاء إدخال اسم العميل ورقم الجوال!");
-                return;
+        // دالة التنفيذ
+        function executeOrder(orderId) {
+            if(confirm("هل أنت متأكد من رغبتك في تنفيذ واعتماد الحركة رقم " + orderId + " مالياً؟")) {
+                const row = document.getElementById('row-' + orderId);
+                if(row) {
+                    const statusCell = row.querySelector('.status-cell');
+                    statusCell.innerText = "منفذ / مكتمل";
+                    statusCell.style.color = "#16a34a";
+                }
+                showAlert("تم تنفيذ الحركة رقم " + orderId + " بنجاح وإصدار سند القيد المالي!");
             }
+        }
 
-            fetch('/api/admin/register-client', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, phone, branch })
-            })
-            .then(r => r.json())
-            .then(data => {
-                showAlert(data.message);
-                loadData();
-            });
+        // دالة الرفض
+        function rejectOrder(orderId) {
+            if(confirm("هل أنت متأكد من رغبتك في رفض هذا الطلب؟")) {
+                const row = document.getElementById('row-' + orderId);
+                if(row) {
+                    const statusCell = row.querySelector('.status-cell');
+                    statusCell.innerText = "مرفوض";
+                    statusCell.style.color = "#dc2626";
+                }
+                showAlert("تم رفض الطلب رقم " + orderId + " وتغيير حالته إلى مرفوض.");
+            }
+        }
+
+        function saveCustomerData() {
+            const f = document.getElementById('cFirst').value;
+            const mid = document.getElementById('cFather').value;
+            const g = document.getElementById('cGrand').value;
+            const l = document.getElementById('cLastName').value;
+            const phone = document.getElementById('cPhone').value;
+            const idNum = document.getElementById('cIdNum').value;
+            const fullName = `${f} ${mid} ${g} ${l}`;
+
+            const tbody = document.getElementById('customersTableBody');
+            tbody.innerHTML += `<tr>
+                <td>77${Math.floor(10000000 + Math.random() * 90000000)}-886</td>
+                <td>${fullName}</td>
+                <td>${phone}</td>
+                <td>${idNum}</td>
+                <td>قيد المراجعة / معتمد</td>
+            </tr>`;
+            showAlert("تم حفظ بيانات العميل وتحديث السجل بنجاح!");
         }
 
         function execSettlement() {
             const sender = document.getElementById('sSender').value;
             const receiver = document.getElementById('sReceiver').value;
             const amount = document.getElementById('sAmount').value;
+            const curr = document.getElementById('sCurr').value;
 
-            fetch('/api/admin/transaction', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ sender, receiver, amount })
-            })
-            .then(r => r.json())
-            .then(data => {
-                showAlert(data.message);
-                loadData();
-            });
+            if(!sender || !receiver || !amount) {
+                alert("يرجى ملء جميع بيانات التسوية والمبلغ!");
+                return;
+            }
+
+            showAlert(`تم تنفيذ التسوية بنجاح بمبلغ ${amount} ${curr} من الحساب (${sender}) إلى (${receiver})`);
         }
-
-        loadData();
     </script>
 </body>
 </html>
