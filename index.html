@@ -57,138 +57,115 @@
 
     <!-- شريط التبويبات العلوي المتكامل -->
     <div class="navbar">
-        <button class="nav-tab active" onclick="openTab('mobile', event)">طلبات الموبايل والحوالات</button>
+        <button class="nav-tab active" onclick="openTab('mobile', event)">طلبات الحوالات والموبايل</button>
         <button class="nav-tab" onclick="openTab('customers', event)">إدارة محافظ العملاء (KYC)</button>
         <button class="nav-tab" onclick="openTab('settlement', event)">تسوية الحسابات</button>
         <button class="nav-tab" onclick="openTab('transactions', event)">حركات المحفظة</button>
-        <button class="nav-tab" onclick="openTab('users', event)">إدارة المستخدمين</button>
+        <button class="nav-tab" onclick="openTab('reports', event)">التقارير المالية والحسابات</button>
+        <button class="nav-tab" onclick="openTab('users', event)">إدارة المستخدمين والصلاحيات</button>
     </div>
 
     <div class="container">
         <div id="alertBox" class="alert-box"></div>
 
-        <!-- 1. شاشة طلبات الموبايل والحوالات (تضم العملة، المرسل، المستلم، زر التنفيذ، وزر الرفض) -->
+        <!-- 1. شاشة طلبات الحوالات والموبايل (حسب الترتيب المطلوب) -->
         <div id="mobile" class="tab-content active">
-            <h3>شاشة طلبات الحوالات والموبايل (إدارة الحوالات والعمليات الواردة)</h3>
+            <h3>شاشة طلبات الحوالات والموبايل (إدارة الحوالات والبحث في الشبكات)</h3>
 
-            <!-- أزرار الفلترة والتحكم -->
             <div class="action-bar">
                 <button class="btn-action btn-primary" onclick="showAlert('عرض جميع طلبات الحوالات المعلقة')">جميع الطلبات</button>
-                <button class="btn-action" onclick="showAlert('جاري تحديث القائمة...')">تحديث</button>
-                <button class="btn-action" onclick="showAlert('عرض الطلبات المكتملة فقط')">الطلبات المكتملة</button>
+                <button class="btn-action" onclick="showAlert('جاري تحديث القائمة والبحث في الشبكات...')">تحديث الشبكات</button>
             </div>
 
-            <!-- جدول الحوالات المفصل -->
             <table>
                 <thead>
                     <tr>
                         <th>رقم الطلب</th>
-                        <th>تاريخ الطلب</th>
-                        <th>المرسل (الحساب / الاسم)</th>
-                        <th>المستلم (الحساب / الاسم)</th>
+                        <th>التاريخ</th>
+                        <th>رقم حساب العميل</th>
+                        <th>اسم العميل</th>
+                        <th>رقم الحوالة</th>
+                        <th>الرقم المرجعي (يدوي)</th>
+                        <th>اسم الخدمة</th>
+                        <th>الإجراءات</th>
+                        <th>اسم المستلم</th>
+                        <th>اسم المرسل</th>
                         <th>المبلغ</th>
                         <th>العملة</th>
-                        <th>رقم الحوالة / المرجع</th>
-                        <th>اسم الخدمة</th>
                         <th>حالة الطلب</th>
-                        <th>الإجراءات والتحكم</th>
                     </tr>
                 </thead>
                 <tbody id="remittanceTable">
                     <tr id="row-22040397">
                         <td>22040397</td>
-                        <td>19/10/2026 01:30 ص</td>
-                        <td>774726501<br><span style="color:#64748b;">فاروق عبدالله مصلح</span></td>
-                        <td>775329825<br><span style="color:#64748b;">محمد القادم أحمد</span></td>
-                        <td><strong>50,000</strong></td>
-                        <td>ريال يمني (886)</td>
+                        <td>19/10/2026</td>
+                        <td>774726501</td>
+                        <td>فاروق عبدالله مصلح</td>
                         <td>600818496</td>
+                        <td><input type="text" style="width: 80px; padding: 3px;" placeholder="أدخل مرجع" id="ref-22040397"></td>
                         <td>سداد يمن موبايل</td>
-                        <td class="status-cell" style="color:#d97706; font-weight:bold;">معلق</td>
                         <td>
-                            <button class="btn btn-blue" onclick="showAlert('تم الاستعلام عن الحوالة رقم 600818496 بنجاح')">استعلام</button>
-                            <button class="btn btn-amber" onclick="showAlert('تم فتح نموذج تحديث الهوية')">تحديث الهوية</button>
+                            <button class="btn btn-blue" onclick="queryNetwork('22040397')">استعلام</button>
                             <button class="btn btn-green" onclick="executeOrder('22040397')">تنفيذ</button>
                             <button class="btn btn-danger" onclick="rejectOrder('22040397')">رفض</button>
                         </td>
+                        <td id="rec-22040397">-</td>
+                        <td id="send-22040397">-</td>
+                        <td id="amt-22040397">-</td>
+                        <td id="curr-22040397">-</td>
+                        <td class="status-cell" style="color:#d97706; font-weight:bold;">معلق</td>
                     </tr>
                     <tr id="row-503234815">
                         <td>503234815</td>
-                        <td>19/10/2026 01:44 ص</td>
-                        <td>736344416<br><span style="color:#64748b;">ماجد علي محسن</span></td>
-                        <td>779870870<br><span style="color:#64748b;">حلال علي قايد</span></td>
-                        <td><strong>350</strong></td>
-                        <td>ريال سعودي (SAR)</td>
+                        <td>19/10/2026</td>
+                        <td>736344416</td>
+                        <td>ماجد علي محسن</td>
                         <td>2341492900</td>
+                        <td><input type="text" style="width: 80px; padding: 3px;" placeholder="أدخل مرجع" id="ref-503234815"></td>
                         <td>حوالة خارجية سريعة</td>
-                        <td class="status-cell" style="color:#d97706; font-weight:bold;">معلق</td>
                         <td>
-                            <button class="btn btn-blue" onclick="showAlert('تم الاستعلام عن الحوالة بنجاح')">استعلام</button>
-                            <button class="btn btn-amber" onclick="showAlert('تم فتح نموذج تحديث الهوية')">تحديث الهوية</button>
+                            <button class="btn btn-blue" onclick="queryNetwork('503234815')">استعلام</button>
                             <button class="btn btn-green" onclick="executeOrder('503234815')">تنفيذ</button>
                             <button class="btn btn-danger" onclick="rejectOrder('503234815')">رفض</button>
                         </td>
-                    </tr>
-                    <tr id="row-262034312">
-                        <td>262034312</td>
-                        <td>18/10/2026 09:50 ص</td>
-                        <td>776636090<br><span style="color:#64748b;">ايمان محمد محرز</span></td>
-                        <td>776992057<br><span style="color:#64748b;">المنتصر عباس</span></td>
-                        <td><strong>100</strong></td>
-                        <td>دولار أمريكي (USD)</td>
-                        <td>668378608</td>
-                        <td>حوالة دولية</td>
+                        <td id="rec-503234815">-</td>
+                        <td id="send-503234815">-</td>
+                        <td id="amt-503234815">-</td>
+                        <td id="curr-503234815">-</td>
                         <td class="status-cell" style="color:#d97706; font-weight:bold;">معلق</td>
-                        <td>
-                            <button class="btn btn-blue" onclick="showAlert('تم الاستعلام بنجاح')">استعلام</button>
-                            <button class="btn btn-amber" onclick="showAlert('تم فتح نموذج تحديث الهوية')">تحديث الهوية</button>
-                            <button class="btn btn-green" onclick="executeOrder('262034312')">تنفيذ</button>
-                            <button class="btn btn-danger" onclick="rejectOrder('262034312')">رفض</button>
-                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- 2. شاشة إدارة محافظ العملاء (KYC) -->
+        <!-- 2. شاشة إدارة محافظ العملاء وتوليد رقم الحساب تلقائياً -->
         <div id="customers" class="tab-content">
-            <h3>إدارة محافظ العملاء وتسجيل الهويات (KYC)</h3>
+            <h3>إدارة محافظ العملاء وتسجيل الهويات وتوليد الحسابات (KYC)</h3>
 
             <div class="action-bar">
-                <button class="btn-action btn-primary" onclick="showAlert('تم تفعيل وضع الإضافة الجديد')">إضافة جديد</button>
-                <button class="btn-action" onclick="showAlert('تم تفعيل وضع التعديل')">تعديل</button>
-                <button class="btn-action" onclick="saveCustomerData()">حفظ</button>
-                <button class="btn-action btn-danger" onclick="showAlert('تم رفض إنشاء الطلب بنجاح')">رفض إنشاء الطلب</button>
+                <button class="btn-action btn-primary" onclick="showAlert('نموذج إضافة عميل جديد جاهز')">إضافة جديد</button>
+                <button class="btn-action" onclick="saveCustomerData()">حفظ وتوليد الحساب</button>
             </div>
 
             <div class="form-grid">
-                <div class="form-group"><label>الاسم الأول</label><input type="text" id="cFirst" value="عبدالله"></div>
-                <div class="form-group"><label>اسم الاب</label><input type="text" id="cFather" value="احمد"></div>
-                <div class="form-group"><label>اسم الجد</label><input type="text" id="cGrand" value="قائد"></div>
-                <div class="form-group"><label>اللقب</label><input type="text" id="cLastName" value="المسلمي"></div>
-                <div class="form-group"><label>نوع المحفظة</label><select id="cWalletType"><option>حساب مصرفي</option><option>محفظة إلكترونية</option></select></div>
-                <div class="form-group"><label>الموبايل</label><input type="text" id="cPhone" value="772301137"></div>
-                <div class="form-group"><label>العنوان</label><input type="text" id="cAddress" value="المنصورة / عدن"></div>
-                <div class="form-group"><label>تاريخ الميلاد</label><input type="text" value="06/01/1999"></div>
-            </div>
-
-            <div class="docs-section">
-                <h4>بيانات الهوية الرسمية والوثائق</h4>
-                <div class="form-grid">
-                    <div class="form-group"><label>رقم الهوية</label><input type="text" id="cIdNum" value="84259115530"></div>
-                    <div class="form-group"><label>تاريخ الإصدار</label><input type="text" value="18/12/2025"></div>
-                    <div class="form-group"><label>تاريخ الانتهاء</label><input type="text" value="18/12/2031"></div>
-                    <div class="form-group"><label>مكان الإصدار</label><input type="text" value="مصلحة الأحوال المدنية"></div>
-                </div>
+                <div class="form-group"><label>الاسم الأول</label><input type="text" id="cFirst"></div>
+                <div class="form-group"><label>اسم الاب</label><input type="text" id="cFather"></div>
+                <div class="form-group"><label>اسم الجد</label><input type="text" id="cGrand"></div>
+                <div class="form-group"><label>اللقب</label><input type="text" id="cLastName"></div>
+                <div class="form-group"><label>نوع المحفظة / العملة</label><select id="cWalletType"><option value="886">ريال يمني (886)</option><option value="SAR">ريال سعودي (SAR)</option><option value="USD">دولار أمريكي (USD)</option></select></div>
+                <div class="form-group"><label>الموبايل</label><input type="text" id="cPhone"></div>
+                <div class="form-group"><label>العنوان</label><input type="text" id="cAddress"></div>
+                <div class="form-group"><label>رقم الهوية</label><input type="text" id="cIdNum"></div>
             </div>
 
             <table>
                 <thead>
                     <tr>
-                        <th>رقم الحساب</th>
+                        <th>رقم الحساب المتولد</th>
                         <th>اسم العميل الرباعي</th>
                         <th>الموبايل</th>
                         <th>رقم الهوية</th>
+                        <th>العملة والنوع</th>
                         <th>الحالة</th>
                     </tr>
                 </thead>
@@ -198,13 +175,14 @@
                         <td>عبدالله احمد قائد المسلمي</td>
                         <td>772301137</td>
                         <td>84259115530</td>
+                        <td>ريال يمني (886)</td>
                         <td>نشط / موثق</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- 3. تسوية الحسابات مع العملات -->
+        <!-- 3. تسوية الحسابات -->
         <div id="settlement" class="tab-content">
             <h3>تسوية الحسابات والقيود اليومية</h3>
             <div class="form-grid">
@@ -219,13 +197,69 @@
         <!-- 4. حركات المحفظة -->
         <div id="transactions" class="tab-content">
             <h3>سجل حركات المحفظة المالية</h3>
-            <p>عرض كافة الحركات المعتمدة والمنفذة بحسب التاريخ والعملة.</p>
+            <p>عرض كافة الحركات المعتمدة والمنفذة بحسب التاريخ والعملة وتأثيرها المباشر على الحسابات.</p>
         </div>
 
-        <!-- 5. إدارة المستخدمين -->
+        <!-- 5. تبويب التقارير المالية والحسابات -->
+        <div id="reports" class="tab-content">
+            <h3>التقارير المالية وحركة الحسابات (إجمالي وتفصيلي)</h3>
+            <div class="form-grid">
+                <div class="form-group"><label>اختر الحساب</label><select id="repAccount"><option>جميع الحسابات (إجمالي)</option><option>775538995-886 (عبدالله المسلمي)</option></select></div>
+                <div class="form-group"><label>العملة</label><select id="repCurr"><option>جميع العملات</option><option>ريال يمني (886)</option><option>ريال سعودي (SAR)</option></select></div>
+                <div class="form-group" style="justify-content: flex-end;"><button class="btn btn-blue" style="padding: 7px;" onclick="showAlert('تم تحديث التقرير المالي بنجاح')">عرض التقرير</button></div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم الحساب</th>
+                        <th>اسم العميل</th>
+                        <th>العملة</th>
+                        <th>إجمالي المدين</th>
+                        <th>إجمالي الدائن</th>
+                        <th>الرصيد الحالي</th>
+                        <th>حالة التأثير المالي</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>775538995-886</td>
+                        <td>عبدالله احمد قائد المسلمي</td>
+                        <td>ريال يمني (886)</td>
+                        <td>150,000</td>
+                        <td>200,000</td>
+                        <td><strong>+50,000</strong></td>
+                        <td style="color: #16a34a; font-weight: bold;">متوازن / نشط</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 6. إدارة المستخدمين والصلاحيات المحدثة -->
         <div id="users" class="tab-content">
-            <h3>إدارة المستخدمين والصلاحيات</h3>
-            <p>إدارة حسابات المسؤولين وتوزيع الأدوار.</p>
+            <h3>إدارة المستخدمين وصلاحيات النظام</h3>
+            <div class="action-bar">
+                <button class="btn-action btn-primary" onclick="addUserPrompt()">إضافة مستخدم جديد</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم المستخدم</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>الدور والصلاحيات</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr>
+                        <td>walid_admin</td>
+                        <td>walid@system.com</td>
+                        <td>مدير النظام الكامل (Full Control)</td>
+                        <td style="color: #16a34a; font-weight: bold;">نشط</td>
+                        <td><button class="btn btn-amber" onclick="showAlert('تعديل صلاحيات المستخدم')">تعديل الصلاحيات</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
     </div>
@@ -245,32 +279,42 @@
             setTimeout(() => box.style.display = 'none', 4000);
         }
 
-        // دالة التنفيذ
+        // محاكاة الاستعلام والبحث في الشبكات لجلب بيانات المرسل والمستلم والعملة والمبلغ
+        function queryNetwork(orderId) {
+            const manualRef = document.getElementById('ref-' + orderId).value;
+            if(!manualRef) {
+                alert("يرجى إدخال الرقم المرجعي يدويّاً أولاً للبحث في الشبكات!");
+                return;
+            }
+
+            // بيانات افتراضية تظهر بعد الاستعلام الناجح
+            document.getElementById('rec-' + orderId).innerText = "محمد أحمد القادم";
+            document.getElementById('send-' + orderId).innerText = "فاروق عبدالله مصلح";
+            document.getElementById('amt-' + orderId).innerText = "50,000";
+            document.getElementById('curr-' + orderId).innerText = "ريال يمني (886)";
+
+            showAlert("تم البحث في شبكات التحويل بنجاح عبر المرجع (" + manualRef + ") وجلب بيانات الحوالة!");
+        }
+
         function executeOrder(orderId) {
-            if(confirm("هل أنت متأكد من رغبتك في تنفيذ واعتماد الحركة رقم " + orderId + " مالياً؟")) {
+            if(confirm("هل أنت متأكد من تنفيذ واعتماد الحوالة رقم " + orderId + " مالياً؟")) {
                 const row = document.getElementById('row-' + orderId);
-                if(row) {
-                    const statusCell = row.querySelector('.status-cell');
-                    statusCell.innerText = "منفذ / مكتمل";
-                    statusCell.style.color = "#16a34a";
-                }
-                showAlert("تم تنفيذ الحركة رقم " + orderId + " بنجاح وإصدار سند القيد المالي!");
+                row.querySelector('.status-cell').innerText = "منفذ / مكتمل";
+                row.querySelector('.status-cell').style.color = "#16a34a";
+                showAlert("تم تنفيذ الحركة رقم " + orderId + " بنجاح وتحديث الحسابات!");
             }
         }
 
-        // دالة الرفض
         function rejectOrder(orderId) {
-            if(confirm("هل أنت متأكد من رغبتك في رفض هذا الطلب؟")) {
+            if(confirm("هل أنت متأكد من رفض الطلب؟")) {
                 const row = document.getElementById('row-' + orderId);
-                if(row) {
-                    const statusCell = row.querySelector('.status-cell');
-                    statusCell.innerText = "مرفوض";
-                    statusCell.style.color = "#dc2626";
-                }
-                showAlert("تم رفض الطلب رقم " + orderId + " وتغيير حالته إلى مرفوض.");
+                row.querySelector('.status-cell').innerText = "مرفوض";
+                row.querySelector('.status-cell').style.color = "#dc2626";
+                showAlert("تم رفض الطلب رقم " + orderId + ".");
             }
         }
 
+        // دالة حفظ العميل وتوليد رقم الحساب تلقائياً
         function saveCustomerData() {
             const f = document.getElementById('cFirst').value;
             const mid = document.getElementById('cFather').value;
@@ -278,17 +322,27 @@
             const l = document.getElementById('cLastName').value;
             const phone = document.getElementById('cPhone').value;
             const idNum = document.getElementById('cIdNum').value;
+            const currType = document.getElementById('cWalletType').value;
+
+            if(!f || !phone || !idNum) {
+                alert("يرجى إدخال البيانات الأساسية للعميل (الاسم، الموبايل، والهوية)!");
+                return;
+            }
+
             const fullName = `${f} ${mid} ${g} ${l}`;
+            // توليد رقم حساب تلقائي بناءً على رقم عشوائي مع رمز العملة
+            const generatedAccNum = Math.floor(100000000 + Math.random() * 900000000) + "-" + currType;
 
             const tbody = document.getElementById('customersTableBody');
             tbody.innerHTML += `<tr>
-                <td>77${Math.floor(10000000 + Math.random() * 90000000)}-886</td>
+                <td>${generatedAccNum}</td>
                 <td>${fullName}</td>
                 <td>${phone}</td>
                 <td>${idNum}</td>
-                <td>قيد المراجعة / معتمد</td>
+                <td>${currType}</td>
+                <td>نشط / موثق</td>
             </tr>`;
-            showAlert("تم حفظ بيانات العميل وتحديث السجل بنجاح!");
+            showAlert("تم حفظ العميل وتوليد رقم الحساب (" + generatedAccNum + ") بنجاح!");
         }
 
         function execSettlement() {
@@ -298,11 +352,26 @@
             const curr = document.getElementById('sCurr').value;
 
             if(!sender || !receiver || !amount) {
-                alert("يرجى ملء جميع بيانات التسوية والمبلغ!");
+                alert("يرجى ملء كافة بيانات التسوية!");
                 return;
             }
+            showAlert(`تمت تسوية القيود المالية بمبلغ ${amount} ${curr} بنجاح!`);
+        }
 
-            showAlert(`تم تنفيذ التسوية بنجاح بمبلغ ${amount} ${curr} من الحساب (${sender}) إلى (${receiver})`);
+        function addUserPrompt() {
+            const username = prompt("أدخل اسم المستخدم الجديد:");
+            const email = prompt("أدخل البريد الإلكتروني للمستخدم:");
+            if(username && email) {
+                const tbody = document.getElementById('usersTableBody');
+                tbody.innerHTML += `<tr>
+                    <td>${username}</td>
+                    <td>${email}</td>
+                    <td>مسؤول عمليات (Operator)</td>
+                    <td style="color: #16a34a; font-weight: bold;">نشط</td>
+                    <td><button class="btn btn-amber" onclick="showAlert('تم التعديل')">تعديل الصلاحيات</button></td>
+                </tr>`;
+                showAlert("تمت إضافة المستخدم الجديد بنجاح!");
+            }
         }
     </script>
 </body>
